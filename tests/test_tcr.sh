@@ -23,7 +23,14 @@ test_exits_with_error_when_success_and_expected_red() {
     assertFalse $?
 }
 
-# exits with success when success and expected green
+test_exits_with_success_when_success_and_expected_green() {
+    echo "exit 0" > $TCR_TEST_COMMAND
+
+    result=`$TCR green`
+
+    assertTrue $?
+}
+
 # exits with error when failure and expected green
 
 # stashes changes when failure and expected green
