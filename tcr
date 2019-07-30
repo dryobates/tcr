@@ -2,3 +2,6 @@
 # https://github.com/dryobates/tcr
 
 set -euo pipefail
+
+echo "Usage: tcr {red,green} [msg]"
+exit 1
