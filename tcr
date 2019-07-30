@@ -3,5 +3,13 @@
 
 set -euo pipefail
 
-echo "Usage: tcr {red,green} [msg]"
-exit 1
+expected=${1:-}
+
+case $expected in
+    red)
+        ;;
+    *)
+        echo "Usage: tcr {red,green} [msg]"
+        exit 1
+        ;;
+esac
