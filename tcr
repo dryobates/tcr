@@ -9,6 +9,9 @@ case $expected in
     red)
         $TCR_TEST_COMMAND && exit 1 || exit 0
         ;;
+    green)
+        $TCR_TEST_COMMAND
+        ;;
     *)
         echo "Usage: tcr {red,green} [msg]"
         exit 1
