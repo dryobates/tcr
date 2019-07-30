@@ -1,0 +1,4 @@
+#! /bin/sh
+# https://github.com/dryobates/tcr
+
+set -euo pipefail
