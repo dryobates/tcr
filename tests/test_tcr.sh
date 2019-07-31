@@ -2,6 +2,7 @@
 
 test_shows_usage_info_when_no_args() {
     givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     result=`$TCR`
 
     assertFalse $?
@@ -10,6 +11,7 @@ test_shows_usage_info_when_no_args() {
 
 test_exits_with_success_when_failure_and_expected_red() {
     givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     givenFailingTest
 
     result=`$TCR red`
@@ -19,6 +21,7 @@ test_exits_with_success_when_failure_and_expected_red() {
 
 test_exits_with_error_when_success_and_expected_red() {
     givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     givenPassingTest
 
     result=`$TCR red`
@@ -28,6 +31,7 @@ test_exits_with_error_when_success_and_expected_red() {
 
 test_exits_with_success_when_success_and_expected_green() {
     givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     givenPassingTest
 
     result=`$TCR green`
@@ -37,6 +41,7 @@ test_exits_with_success_when_success_and_expected_green() {
 
 test_exits_with_error_when_failure_and_expected_green() {
     givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     givenFailingTest
 
     result=`$TCR green`
@@ -68,6 +73,11 @@ test_exits_with_error_when_repository_does_not_have_initial_commit() {
     result=`$TCR`
 
     assertEquals "At least initial commit is needed" "$result"
+}
+
+givenInitialCommitHasBeenCreated() {
+    git -C $TEST_DIR add $TCR_TEST_COMMAND
+    git -C $TEST_DIR commit -m "init"
 }
 
 # stashes changes when failure and expected green
