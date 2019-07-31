@@ -69,7 +69,7 @@ test_stashes_changes_when_success_and_expected_red() {
     assertChangesStashed
 }
 
-test_exits_with_error_when_failure_expected_green_and_index_is_empty() {
+test_exits_with_error_when_trying_stash_but_empty_index() {
     givenFailingTest
     git -C $TEST_DIR commit -am "everything commited" > /dev/null
 
@@ -112,7 +112,6 @@ assertChangesStashed() {
 # commits changes when failure and expected red
 # commits changes when success and expected green
 # runs tests with make test when test command not provided
-# does not stash when success expected red and index is empty
 
 setUp() {
     TCR=$(dirname $(dirname $0))/tcr
