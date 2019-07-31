@@ -62,11 +62,18 @@ test_exits_with_error_when_repository_does_not_exist() {
     assertEquals "Run from git repository!" "$result"
 }
 
+test_exits_with_error_when_repository_does_not_have_initial_commit() {
+    givenRepositoryHasBeenCreated
+
+    result=`$TCR`
+
+    assertEquals "At least initial commit is needed" "$result"
+}
+
 # stashes changes when failure and expected green
 # stashes changes when success and expected red
 # commits changes when failure and expected red
 # commits changes when success and expected green
-# exits with error when repository does not have initial commit
 # runs tests with make test when test command not provided
 # does not stash when failure expected green and index is empty
 # does not stash when success expected red and index is empty
