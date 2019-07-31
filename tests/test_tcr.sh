@@ -71,6 +71,16 @@ test_stashes_changes_when_failure_and_expected_green() {
     assertChangesStashed
 }
 
+test_stashes_changes_when_success_and_expected_red() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+    givenPassingTest
+
+    result=`$TCR red`
+
+    assertChangesStashed
+}
+
 givenRepositoryHasBeenCreated() {
     git init -q $TEST_DIR > /dev/null
 }
@@ -95,7 +105,6 @@ assertChangesStashed() {
 }
 
 
-# stashes changes when success and expected red
 # commits changes when failure and expected red
 # commits changes when success and expected green
 # runs tests with make test when test command not provided
