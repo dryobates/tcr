@@ -61,6 +61,16 @@ test_exits_with_success_when_success_and_expected_green() {
     assertTrue $?
 }
 
+test_stashes_changes_when_failure_and_expected_green() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+    givenFailingTest
+
+    result=`$TCR green`
+
+    assertChangesStashed
+}
+
 givenRepositoryHasBeenCreated() {
     git init -q $TEST_DIR > /dev/null
 }
@@ -78,16 +88,6 @@ givenPassingTest() {
     echo "exit 0" > $TCR_TEST_COMMAND
 }
 
-
-test_stashes_changes_when_failure_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
-    givenFailingTest
-
-    result=`$TCR green`
-
-    assertChangesStashed
-}
 
 assertChangesStashed() {
     stashed=`git -C $TEST_DIR stash list`
