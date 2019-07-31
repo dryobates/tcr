@@ -8,7 +8,7 @@ main() {
     case $expected in
         red)
             check_guards
-            $TCR_TEST_COMMAND && exit 1 || exit 0
+            $TCR_TEST_COMMAND && revert || exit 0
             ;;
         green)
             check_guards
