@@ -22,8 +22,6 @@ test_exits_with_error_when_repository_does_not_have_initial_commit() {
 }
 
 test_exits_with_error_when_failure_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenFailingTest
 
     result=`$TCR green`
@@ -32,8 +30,6 @@ test_exits_with_error_when_failure_and_expected_green() {
 }
 
 test_exits_with_success_when_failure_and_expected_red() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenFailingTest
 
     result=`$TCR red`
@@ -42,8 +38,6 @@ test_exits_with_success_when_failure_and_expected_red() {
 }
 
 test_exits_with_error_when_success_and_expected_red() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenPassingTest
 
     result=`$TCR red`
@@ -52,8 +46,6 @@ test_exits_with_error_when_success_and_expected_red() {
 }
 
 test_exits_with_success_when_success_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenPassingTest
 
     result=`$TCR green`
@@ -62,8 +54,6 @@ test_exits_with_success_when_success_and_expected_green() {
 }
 
 test_stashes_changes_when_failure_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenFailingTest
 
     result=`$TCR green`
@@ -72,8 +62,6 @@ test_stashes_changes_when_failure_and_expected_green() {
 }
 
 test_stashes_changes_when_success_and_expected_red() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     givenPassingTest
 
     result=`$TCR red`
@@ -91,10 +79,14 @@ givenInitialCommitHasBeenCreated() {
 }
 
 givenFailingTest() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     echo "exit 1" > $TCR_TEST_COMMAND
 }
 
 givenPassingTest() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
     echo "exit 0" > $TCR_TEST_COMMAND
 }
 
