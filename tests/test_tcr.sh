@@ -79,7 +79,22 @@ givenPassingTest() {
 }
 
 
-# stashes changes when failure and expected green
+test_stashes_changes_when_failure_and_expected_green() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+    givenFailingTest
+
+    result=`$TCR green`
+
+    assertChangesStashed
+}
+
+assertChangesStashed() {
+    stashed=`git -C $TEST_DIR stash list`
+    assertEquals "WIP on master" "$stashed"
+}
+
+
 # stashes changes when success and expected red
 # commits changes when failure and expected red
 # commits changes when success and expected green
