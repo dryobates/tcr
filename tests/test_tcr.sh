@@ -7,16 +7,6 @@ test_shows_usage_info_when_no_args() {
     assertEquals "Usage: tcr {red,green} [msg]" "$result"
 }
 
-test_exits_with_error_when_failure_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
-    givenFailingTest
-
-    result=`$TCR green`
-
-    assertFalse $?
-}
-
 test_exits_with_error_when_repository_does_not_exist() {
     result=`$TCR green`
 
@@ -29,6 +19,16 @@ test_exits_with_error_when_repository_does_not_have_initial_commit() {
     result=`$TCR green`
 
     assertEquals "At least initial commit is needed" "$result"
+}
+
+test_exits_with_error_when_failure_and_expected_green() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+    givenFailingTest
+
+    result=`$TCR green`
+
+    assertFalse $?
 }
 
 test_exits_with_success_when_failure_and_expected_red() {
