@@ -39,10 +39,20 @@ test_exits_with_error_when_failure_and_expected_green() {
     assertFalse $?
 }
 
+test_exits_with_error_when_repository_does_not_exist() {
+    result=`$TCR`
+
+    assertEquals "Run from git repository!" "$result"
+}
+
 # stashes changes when failure and expected green
 # stashes changes when success and expected red
 # commits changes when failure and expected red
 # commits changes when success and expected green
+# exits with error when repository does not have initial commit
+# runs tests with make test when test command not provided
+# does not stash when failure expected green and index is empty
+# does not stash when success expected red and index is empty
 
 oneTimeSetUp() {
     TCR=$(dirname $(dirname $0))/tcr
@@ -53,6 +63,15 @@ oneTimeSetUp() {
     chmod +x $TCR_TEST_COMMAND
     export TCR_TEST_COMMAND
 }
+
+setUp() {
+    OLD_DIR=$PWD
+    cd $TEST_DIR
+}
+tearDown() {
+    cd $OLD_DIR
+}
+
 
 # Load shUnit2
 source `dirname $0`/shunit2
