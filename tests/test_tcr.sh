@@ -69,6 +69,21 @@ test_stashes_changes_when_success_and_expected_red() {
     assertChangesStashed
 }
 
+givenFailingTest() {
+    givenRepositoryHasBeenInitialized
+    echo "exit 1" > $TCR_TEST_COMMAND
+}
+
+givenPassingTest() {
+    givenRepositoryHasBeenInitialized
+    echo "exit 0" > $TCR_TEST_COMMAND
+}
+
+givenRepositoryHasBeenInitialized() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+}
+
 givenRepositoryHasBeenCreated() {
     git init -q $TEST_DIR > /dev/null
 }
@@ -76,18 +91,6 @@ givenRepositoryHasBeenCreated() {
 givenInitialCommitHasBeenCreated() {
     git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
     git -C $TEST_DIR commit -m "init" > /dev/null
-}
-
-givenFailingTest() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
-    echo "exit 1" > $TCR_TEST_COMMAND
-}
-
-givenPassingTest() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
-    echo "exit 0" > $TCR_TEST_COMMAND
 }
 
 
