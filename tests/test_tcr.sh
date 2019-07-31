@@ -10,7 +10,7 @@ test_shows_usage_info_when_no_args() {
 
 test_exits_with_success_when_failure_and_expected_red() {
     givenRepositoryHasBeenCreated
-    echo "exit 1" > $TCR_TEST_COMMAND
+    givenFailingTest
 
     result=`$TCR red`
 
@@ -19,7 +19,7 @@ test_exits_with_success_when_failure_and_expected_red() {
 
 test_exits_with_error_when_success_and_expected_red() {
     givenRepositoryHasBeenCreated
-    echo "exit 0" > $TCR_TEST_COMMAND
+    givenPassingTest
 
     result=`$TCR red`
 
@@ -28,7 +28,7 @@ test_exits_with_error_when_success_and_expected_red() {
 
 test_exits_with_success_when_success_and_expected_green() {
     givenRepositoryHasBeenCreated
-    echo "exit 0" > $TCR_TEST_COMMAND
+    givenPassingTest
 
     result=`$TCR green`
 
@@ -37,7 +37,7 @@ test_exits_with_success_when_success_and_expected_green() {
 
 test_exits_with_error_when_failure_and_expected_green() {
     givenRepositoryHasBeenCreated
-    echo "exit 1" > $TCR_TEST_COMMAND
+    givenFailingTest
 
     result=`$TCR green`
 
@@ -46,6 +46,14 @@ test_exits_with_error_when_failure_and_expected_green() {
 
 givenRepositoryHasBeenCreated() {
     git init -q $TEST_DIR
+}
+
+givenFailingTest() {
+    echo "exit 1" > $TCR_TEST_COMMAND
+}
+
+givenPassingTest() {
+    echo "exit 0" > $TCR_TEST_COMMAND
 }
 
 test_exits_with_error_when_repository_does_not_exist() {
@@ -68,9 +76,9 @@ setUp() {
     TCR=`realpath $TCR`
     TEST_DIR=`mktemp -d`
     TCR_TEST_COMMAND=$TEST_DIR/test.sh
+    export TCR_TEST_COMMAND
     touch $TCR_TEST_COMMAND
     chmod +x $TCR_TEST_COMMAND
-    export TCR_TEST_COMMAND
     OLD_DIR=$PWD
     cd $TEST_DIR
 }
