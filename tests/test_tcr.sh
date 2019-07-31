@@ -91,7 +91,7 @@ test_stashes_changes_when_failure_and_expected_green() {
 
 assertChangesStashed() {
     stashed=`git -C $TEST_DIR stash list`
-    assertEquals "WIP on master" "$stashed"
+    assertContains "$stashed" "WIP on master"
 }
 
 

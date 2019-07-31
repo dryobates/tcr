@@ -12,7 +12,7 @@ main() {
             ;;
         green)
             check_guards
-            $TCR_TEST_COMMAND
+            $TCR_TEST_COMMAND || revert
             ;;
         *)
             error "Usage: tcr {red,green} [msg]"
@@ -35,6 +35,11 @@ error_when_no_initial_commit() {
 
 error() {
     echo $1
+    exit 1
+}
+
+revert() {
+    git stash
     exit 1
 }
 
