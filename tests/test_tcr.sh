@@ -1,6 +1,7 @@
 #! /bin/sh
 
 test_shows_usage_info_when_no_args() {
+    givenRepositoryHasBeenCreated
     result=`$TCR`
 
     assertFalse $?
@@ -8,6 +9,7 @@ test_shows_usage_info_when_no_args() {
 }
 
 test_exits_with_success_when_failure_and_expected_red() {
+    givenRepositoryHasBeenCreated
     echo "exit 1" > $TCR_TEST_COMMAND
 
     result=`$TCR red`
@@ -16,6 +18,7 @@ test_exits_with_success_when_failure_and_expected_red() {
 }
 
 test_exits_with_error_when_success_and_expected_red() {
+    givenRepositoryHasBeenCreated
     echo "exit 0" > $TCR_TEST_COMMAND
 
     result=`$TCR red`
@@ -24,6 +27,7 @@ test_exits_with_error_when_success_and_expected_red() {
 }
 
 test_exits_with_success_when_success_and_expected_green() {
+    givenRepositoryHasBeenCreated
     echo "exit 0" > $TCR_TEST_COMMAND
 
     result=`$TCR green`
@@ -32,11 +36,16 @@ test_exits_with_success_when_success_and_expected_green() {
 }
 
 test_exits_with_error_when_failure_and_expected_green() {
+    givenRepositoryHasBeenCreated
     echo "exit 1" > $TCR_TEST_COMMAND
 
     result=`$TCR green`
 
     assertFalse $?
+}
+
+givenRepositoryHasBeenCreated() {
+    git init -q $TEST_DIR
 }
 
 test_exits_with_error_when_repository_does_not_exist() {
@@ -54,7 +63,7 @@ test_exits_with_error_when_repository_does_not_exist() {
 # does not stash when failure expected green and index is empty
 # does not stash when success expected red and index is empty
 
-oneTimeSetUp() {
+setUp() {
     TCR=$(dirname $(dirname $0))/tcr
     TCR=`realpath $TCR`
     TEST_DIR=`mktemp -d`
@@ -62,14 +71,13 @@ oneTimeSetUp() {
     touch $TCR_TEST_COMMAND
     chmod +x $TCR_TEST_COMMAND
     export TCR_TEST_COMMAND
-}
-
-setUp() {
     OLD_DIR=$PWD
     cd $TEST_DIR
 }
 tearDown() {
     cd $OLD_DIR
+    rm -rf $TEST_DIR
+    unset TCR_TEST_COMMAND
 }
 
 

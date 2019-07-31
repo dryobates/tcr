@@ -5,6 +5,13 @@ set -euo pipefail
 
 expected=${1:-}
 
+error() {
+    echo $1
+    exit 1
+}
+
+test -d .git || error "Run from git repository!"
+
 case $expected in
     red)
         $TCR_TEST_COMMAND && exit 1 || exit 0
