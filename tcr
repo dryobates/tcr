@@ -30,7 +30,7 @@ error_when_not_git_repository() {
 }
 
 error_when_no_initial_commit() {
-    git show 2> /dev/null || error "At least initial commit is needed"
+    git show > /dev/null 2>&1 || error "At least initial commit is needed"
 }
 
 error() {
