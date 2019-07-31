@@ -1,12 +1,34 @@
 #! /bin/sh
 
 test_shows_usage_info_when_no_args() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
     result=`$TCR`
 
     assertFalse $?
     assertEquals "Usage: tcr {red,green} [msg]" "$result"
+}
+
+test_exits_with_error_when_failure_and_expected_green() {
+    givenRepositoryHasBeenCreated
+    givenInitialCommitHasBeenCreated
+    givenFailingTest
+
+    result=`$TCR green`
+
+    assertFalse $?
+}
+
+test_exits_with_error_when_repository_does_not_exist() {
+    result=`$TCR green`
+
+    assertEquals "Run from git repository!" "$result"
+}
+
+test_exits_with_error_when_repository_does_not_have_initial_commit() {
+    givenRepositoryHasBeenCreated
+
+    result=`$TCR green`
+
+    assertEquals "At least initial commit is needed" "$result"
 }
 
 test_exits_with_success_when_failure_and_expected_red() {
@@ -39,18 +61,13 @@ test_exits_with_success_when_success_and_expected_green() {
     assertTrue $?
 }
 
-test_exits_with_error_when_failure_and_expected_green() {
-    givenRepositoryHasBeenCreated
-    givenInitialCommitHasBeenCreated
-    givenFailingTest
-
-    result=`$TCR green`
-
-    assertFalse $?
+givenRepositoryHasBeenCreated() {
+    git init -q $TEST_DIR > /dev/null
 }
 
-givenRepositoryHasBeenCreated() {
-    git init -q $TEST_DIR
+givenInitialCommitHasBeenCreated() {
+    git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
+    git -C $TEST_DIR commit -m "init" > /dev/null
 }
 
 givenFailingTest() {
@@ -61,24 +78,6 @@ givenPassingTest() {
     echo "exit 0" > $TCR_TEST_COMMAND
 }
 
-test_exits_with_error_when_repository_does_not_exist() {
-    result=`$TCR`
-
-    assertEquals "Run from git repository!" "$result"
-}
-
-test_exits_with_error_when_repository_does_not_have_initial_commit() {
-    givenRepositoryHasBeenCreated
-
-    result=`$TCR`
-
-    assertEquals "At least initial commit is needed" "$result"
-}
-
-givenInitialCommitHasBeenCreated() {
-    git -C $TEST_DIR add $TCR_TEST_COMMAND
-    git -C $TEST_DIR commit -m "init"
-}
 
 # stashes changes when failure and expected green
 # stashes changes when success and expected red
@@ -104,7 +103,6 @@ tearDown() {
     rm -rf $TEST_DIR
     unset TCR_TEST_COMMAND
 }
-
 
 # Load shUnit2
 source `dirname $0`/shunit2
