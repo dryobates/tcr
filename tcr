@@ -2,13 +2,16 @@
 # https://github.com/dryobates/tcr
 
 set -euo pipefail
+TEST_PREFIX="T"
+BEHAVIOUR_PREFIX="B"
+STRUCTURE_PREFIX="S"
 
 main() {
     expected=${1:-}
     case $expected in
         red)
             check_guards
-            test && revert || commit "T"
+            test && revert || commit $TEST_PREFIX
             ;;
         green)
             check_guards
@@ -44,12 +47,12 @@ test() {
 }
 
 set_behaviour_or_structure_prefix() {
-    last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o '^[BS]' || true`
+    last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o "^\(${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)" || true`
     if [ -z $last_prefix_is_B_or_S ];
     then
-        prefix="B"
+        prefix=$BEHAVIOUR_PREFIX
     else
-        prefix="S"
+        prefix=$STRUCTURE_PREFIX
     fi
 }
 
