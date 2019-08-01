@@ -78,6 +78,14 @@ test_exits_with_error_when_trying_stash_but_empty_index() {
     assertEquals "No local changes to save" "$result"
 }
 
+test_commits_changes_when_failure_and_expected_red() {
+    givenFailingTest
+
+    result=`$TCR red`
+
+    assertChangesCommited
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -108,10 +116,19 @@ assertChangesStashed() {
     assertContains "$stashed" "WIP on master"
 }
 
+assertChangesCommited() {
+    last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
+    assertContains "$last_commit" "working"
+}
 
-# commits changes when failure and expected red
+
 # commits changes when success and expected green
 # runs tests with make test when test command not provided
+# commits changes with T prefix when failure and expected red
+# commits changes with B prefix when success and expected green
+# commits changes with S prefix when success, expected green and last commit was with B or S prefix
+# commits changes with given message when failure and expected red
+# commits changes with given message when success and expected green
 
 setUp() {
     TCR=$(dirname $(dirname $0))/tcr
