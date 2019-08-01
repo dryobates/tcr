@@ -161,7 +161,7 @@ givenLastCommitMessageHadPrefix() {
     prefix=$1
     echo "#" >> $TCR_TEST_COMMAND
     git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
-    git -C $TEST_DIR commit -m "$prefix message" > /dev/null
+    git -C $TEST_DIR commit -m "$prefix working" > /dev/null
 }
 
 givenLastCommitMessageHadMessage() {
@@ -183,7 +183,7 @@ givenRepositoryHasBeenCreated() {
 
 givenInitialCommitHasBeenCreated() {
     git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
-    git -C $TEST_DIR commit -m "init" > /dev/null
+    git -C $TEST_DIR commit -m "working" > /dev/null
 }
 
 

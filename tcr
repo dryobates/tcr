@@ -13,8 +13,8 @@ main() {
     fi
     expected=${1:-}
     shift
-    message=${*:-working}
     check_guards
+    set_message_when_not_provided $*
     case $expected in
         red)
             test && revert || commit "$TEST_PREFIX $message"
@@ -27,6 +27,14 @@ main() {
             usage
             ;;
     esac
+}
+
+set_message_when_not_provided() {
+    message=${*:-}
+    if [ -z "$message" ];
+    then
+        message=`git show -s --format='format:%s' | sed -e "s/^\(${TEST_PREFIX}\|${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\) //"`
+    fi
 }
 
 usage() {
