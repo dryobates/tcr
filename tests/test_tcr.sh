@@ -128,6 +128,15 @@ test_commits_changes_with_given_message_when_failure_and_expected_red() {
     assertChangesCommitedWithMessage "T $message"
 }
 
+test_commits_changes_with_given_message_when_success_and_expected_green() {
+    givenPassingTest
+    message="custom message"
+
+    result=`$TCR green $message`
+
+    assertChangesCommitedWithMessage "B $message"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -177,7 +186,6 @@ assertChangesCommitedWithMessage() {
     assertEquals "$message" "$last_commit"
 }
 
-# commits changes with given message when success and expected green
 # commits changes with last message but different prefix when success and expected green
 # runs tests with make test when test command not provided
 
