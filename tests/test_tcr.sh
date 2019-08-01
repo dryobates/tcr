@@ -111,7 +111,7 @@ test_commits_changes_with_B_prefix_when_success_and_expected_green() {
 }
 
 test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_was_with_B_or_S_prefix() {
-    givenLastCommitMessageHadPrefix "B"
+    givenLastCommitMessageHadMessage "B working"
     givenPassingTest
 
     result=`$TCR green`
@@ -163,14 +163,6 @@ givenFailingTest() {
 givenPassingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 0" > $TCR_TEST_COMMAND
-}
-
-givenLastCommitMessageHadPrefix() {
-    givenRepositoryHasBeenInitialized
-    prefix=$1
-    echo "#" >> $TCR_TEST_COMMAND
-    git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
-    git -C $TEST_DIR commit -m "$prefix working" > /dev/null
 }
 
 givenLastCommitMessageHadMessage() {
