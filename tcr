@@ -35,7 +35,8 @@ set_message_when_not_provided() {
     message=${*:-}
     if [ -z "$message" ];
     then
-        message=`git show -s --format='format:%s' | sed -e "s/^\(${TEST_PREFIX}\|${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\) //"`
+        any_prefix="\(${TEST_PREFIX}\|${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)"
+        message=`git show -s --format='format:%s' | sed -e "s/^$any_prefix //"`
     fi
 }
 
@@ -66,7 +67,8 @@ test() {
 }
 
 set_behaviour_or_structure_prefix() {
-    last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o "^\(${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)" || true`
+    B_or_S_prefix="\(${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)"
+    last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o "^${B_or_S_prefix}" || true`
     if [ -z $last_prefix_is_B_or_S ];
     then
         prefix=$BEHAVIOUR_PREFIX
