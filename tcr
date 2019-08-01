@@ -12,7 +12,7 @@ main() {
             ;;
         green)
             check_guards
-            test && commit || revert
+            test && commit "B" || revert
             ;;
         *)
             error "Usage: tcr {red,green} [msg]"
