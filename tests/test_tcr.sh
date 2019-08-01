@@ -24,7 +24,7 @@ test_exits_with_error_when_repository_does_not_have_initial_commit() {
 test_exits_with_error_when_failure_and_expected_green() {
     givenFailingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertFalse $?
 }
@@ -32,7 +32,7 @@ test_exits_with_error_when_failure_and_expected_green() {
 test_exits_with_success_when_failure_and_expected_red() {
     givenFailingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertTrue $?
 }
@@ -40,7 +40,7 @@ test_exits_with_success_when_failure_and_expected_red() {
 test_exits_with_error_when_success_and_expected_red() {
     givenPassingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertFalse $?
 }
@@ -48,7 +48,7 @@ test_exits_with_error_when_success_and_expected_red() {
 test_exits_with_success_when_success_and_expected_green() {
     givenPassingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertTrue $?
 }
@@ -56,7 +56,7 @@ test_exits_with_success_when_success_and_expected_green() {
 test_stashes_changes_when_failure_and_expected_green() {
     givenFailingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertChangesStashed
 }
@@ -64,7 +64,7 @@ test_stashes_changes_when_failure_and_expected_green() {
 test_stashes_changes_when_success_and_expected_red() {
     givenPassingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertChangesStashed
 }
@@ -81,7 +81,7 @@ test_exits_with_error_when_trying_stash_but_empty_index() {
 test_commits_changes_when_failure_and_expected_red() {
     givenFailingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertChangesCommited
 }
@@ -89,7 +89,7 @@ test_commits_changes_when_failure_and_expected_red() {
 test_commits_changes_when_success_and_expected_green() {
     givenPassingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertChangesCommited
 }
@@ -97,7 +97,7 @@ test_commits_changes_when_success_and_expected_green() {
 test_commits_changes_with_T_prefix_when_failure_and_expected_red() {
     givenFailingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertChangesCommitedWithMessage "T working"
 }
@@ -105,7 +105,7 @@ test_commits_changes_with_T_prefix_when_failure_and_expected_red() {
 test_commits_changes_with_B_prefix_when_success_and_expected_green() {
     givenPassingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertChangesCommitedWithMessage "B working"
 }
@@ -114,7 +114,7 @@ test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_w
     givenLastCommitMessageHadMessage "B working"
     givenPassingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertChangesCommitedWithMessage "S working"
 }
@@ -123,7 +123,7 @@ test_commits_changes_with_given_message_when_failure_and_expected_red() {
     givenFailingTest
     message="custom message"
 
-    result=`$TCR red $message`
+    $TCR red $message > /dev/null
 
     assertChangesCommitedWithMessage "T $message"
 }
@@ -132,7 +132,7 @@ test_commits_changes_with_given_message_when_success_and_expected_green() {
     givenPassingTest
     message="custom message"
 
-    result=`$TCR green $message`
+    $TCR green $message > /dev/null
 
     assertChangesCommitedWithMessage "B $message"
 }
@@ -141,7 +141,7 @@ test_commits_changes_with_last_message_but_different_prefix_when_success_and_exp
     givenLastCommitMessageHadMessage "T custom message"
     givenPassingTest
 
-    result=`$TCR green`
+    $TCR green > /dev/null
 
     assertChangesCommitedWithMessage "B custom message"
 }
@@ -150,7 +150,7 @@ test_commits_changes_with_default_message_when_failure_expected_red() {
     givenLastCommitMessageHadMessage "S some message"
     givenFailingTest
 
-    result=`$TCR red`
+    $TCR red > /dev/null
 
     assertChangesCommitedWithMessage "T working"
 }
@@ -159,7 +159,7 @@ test_runs_tests_with_make_test_when_test_command_not_provided() {
     givenFailingTest
     givenTestCommandIsMakeTest
 
-    result=`$TCR red`
+    $TCR red &> /dev/null
 
     assertChangesCommitedWithMessage "T working"
 }
