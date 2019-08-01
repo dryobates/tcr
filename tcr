@@ -5,6 +5,7 @@ set -euo pipefail
 TEST_PREFIX="T"
 BEHAVIOUR_PREFIX="B"
 STRUCTURE_PREFIX="S"
+DEFAULT_MESSAGE="working"
 
 main() {
     if [ $# == "0" ];
@@ -14,12 +15,13 @@ main() {
     expected=${1:-}
     shift
     check_guards
-    set_message_when_not_provided $*
     case $expected in
         red)
+            message=${*:-$DEFAULT_MESSAGE}
             test && revert || commit "$TEST_PREFIX $message"
             ;;
         green)
+            set_message_when_not_provided $*
             set_behaviour_or_structure_prefix
             test && commit "$prefix $message" || revert
             ;;
