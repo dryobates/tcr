@@ -99,7 +99,7 @@ test_commits_changes_with_T_prefix_when_failure_and_expected_red() {
 
     result=`$TCR red`
 
-    assertChangesCommitedWithPrefix "T"
+    assertChangesCommitedWithMessage "T working"
 }
 
 test_commits_changes_with_B_prefix_when_success_and_expected_green() {
@@ -107,7 +107,7 @@ test_commits_changes_with_B_prefix_when_success_and_expected_green() {
 
     result=`$TCR green`
 
-    assertChangesCommitedWithPrefix "B"
+    assertChangesCommitedWithMessage "B working"
 }
 
 test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_was_with_B_or_S_prefix() {
@@ -116,7 +116,7 @@ test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_w
 
     result=`$TCR green`
 
-    assertChangesCommitedWithPrefix "S"
+    assertChangesCommitedWithMessage "S working"
 }
 
 test_commits_changes_with_given_message_when_failure_and_expected_red() {
@@ -171,17 +171,12 @@ assertChangesCommited() {
     assertContains "$last_commit" "working"
 }
 
-assertChangesCommitedWithPrefix() {
-    prefix=$1
-    last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
-    assertEquals "$prefix working" "$last_commit"
-}
-
 assertChangesCommitedWithMessage() {
     message=$1
     last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
     assertEquals "$message" "$last_commit"
 }
+
 # commits changes with given message when success and expected green
 # commits changes with last message but different prefix when success and expected green
 # runs tests with make test when test command not provided
