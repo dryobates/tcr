@@ -14,13 +14,12 @@ main() {
     expected=${1:-}
     shift
     message=${*:-working}
+    check_guards
     case $expected in
         red)
-            check_guards
             test && revert || commit "$TEST_PREFIX $message"
             ;;
         green)
-            check_guards
             set_behaviour_or_structure_prefix
             test && commit "$prefix working" || revert
             ;;
