@@ -94,6 +94,14 @@ test_commits_changes_when_success_and_expected_green() {
     assertChangesCommited
 }
 
+test_commits_changes_with_T_prefix_when_failure_and_expected_red() {
+    givenFailingTest
+
+    result=`$TCR red`
+
+    assertChangesCommitedWithPrefix "T"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -129,13 +137,18 @@ assertChangesCommited() {
     assertContains "$last_commit" "working"
 }
 
+assertChangesCommitedWithPrefix() {
+    prefix=$1
+    last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
+    assertEquals "$prefix working" "$last_commit"
+}
 
-# runs tests with make test when test command not provided
 # commits changes with T prefix when failure and expected red
 # commits changes with B prefix when success and expected green
 # commits changes with S prefix when success, expected green and last commit was with B or S prefix
 # commits changes with given message when failure and expected red
 # commits changes with given message when success and expected green
+# runs tests with make test when test command not provided
 
 setUp() {
     TCR=$(dirname $(dirname $0))/tcr
