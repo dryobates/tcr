@@ -12,7 +12,8 @@ main() {
             ;;
         green)
             check_guards
-            test && commit "B" || revert
+            set_behaviour_or_structure_prefix
+            test && commit $prefix || revert
             ;;
         *)
             error "Usage: tcr {red,green} [msg]"
@@ -41,6 +42,17 @@ error() {
 test() {
     $TCR_TEST_COMMAND
 }
+
+set_behaviour_or_structure_prefix() {
+    last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o '^[BS]' || true`
+    if [ -z $last_prefix_is_B_or_S ];
+    then
+        prefix="B"
+    else
+        prefix="S"
+    fi
+}
+
 
 commit() {
     prefix=${1:-}
