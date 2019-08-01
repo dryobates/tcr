@@ -155,6 +155,15 @@ test_commits_changes_with_default_message_when_failure_expected_red() {
     assertChangesCommitedWithMessage "T working"
 }
 
+test_runs_tests_with_make_test_when_test_command_not_provided() {
+    givenFailingTest
+    givenTestCommandIsMakeTest
+
+    result=`$TCR red`
+
+    assertChangesCommitedWithMessage "T working"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -187,6 +196,13 @@ givenInitialCommitHasBeenCreated() {
     git -C $TEST_DIR commit -m "working" > /dev/null
 }
 
+givenTestCommandIsMakeTest() {
+    mv $TCR_TEST_COMMAND $TEST_DIR/Makefile
+    makefile="test:
+	exit 1"
+    echo "$makefile" > $TEST_DIR/Makefile
+    unset TCR_TEST_COMMAND
+}
 
 assertChangesStashed() {
     stashed=`git -C $TEST_DIR stash list`
@@ -203,8 +219,6 @@ assertChangesCommitedWithMessage() {
     last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
     assertEquals "$message" "$last_commit"
 }
-
-# runs tests with make test when test command not provided
 
 setUp() {
     TCR=$(dirname $(dirname $0))/tcr
