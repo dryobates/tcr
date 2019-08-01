@@ -102,6 +102,14 @@ test_commits_changes_with_T_prefix_when_failure_and_expected_red() {
     assertChangesCommitedWithPrefix "T"
 }
 
+test_commits_changes_with_B_prefix_when_success_and_expected_green() {
+    givenPassingTest
+
+    result=`$TCR green`
+
+    assertChangesCommitedWithPrefix "B"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -143,8 +151,6 @@ assertChangesCommitedWithPrefix() {
     assertEquals "$prefix working" "$last_commit"
 }
 
-# commits changes with T prefix when failure and expected red
-# commits changes with B prefix when success and expected green
 # commits changes with S prefix when success, expected green and last commit was with B or S prefix
 # commits changes with given message when failure and expected red
 # commits changes with given message when success and expected green
