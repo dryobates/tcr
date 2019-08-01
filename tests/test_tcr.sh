@@ -146,6 +146,15 @@ test_commits_changes_with_last_message_but_different_prefix_when_success_and_exp
     assertChangesCommitedWithMessage "B custom message"
 }
 
+test_commits_changes_with_default_message_when_failure_expected_red() {
+    givenLastCommitMessageHadMessage "S some message"
+    givenFailingTest
+
+    result=`$TCR red`
+
+    assertChangesCommitedWithMessage "T working"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
