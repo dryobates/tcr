@@ -119,6 +119,15 @@ test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_w
     assertChangesCommitedWithPrefix "S"
 }
 
+test_commits_changes_with_given_message_when_failure_and_expected_red() {
+    givenFailingTest
+    message="custom message"
+
+    result=`$TCR red $message`
+
+    assertChangesCommitedWithMessage "T $message"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -168,8 +177,13 @@ assertChangesCommitedWithPrefix() {
     assertEquals "$prefix working" "$last_commit"
 }
 
-# commits changes with given message when failure and expected red
+assertChangesCommitedWithMessage() {
+    message=$1
+    last_commit=`git -C $TEST_DIR show -s --format='format:%s'`
+    assertEquals "$message" "$last_commit"
+}
 # commits changes with given message when success and expected green
+# commits changes with last message but different prefix when success and expected green
 # runs tests with make test when test command not provided
 
 setUp() {
