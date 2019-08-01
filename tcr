@@ -63,7 +63,7 @@ error() {
 }
 
 test() {
-    $TCR_TEST_COMMAND
+    ${TCR_TEST_COMMAND:-make test}
 }
 
 set_behaviour_or_structure_prefix() {
