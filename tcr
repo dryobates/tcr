@@ -17,13 +17,12 @@ main() {
     check_guards
     case $expected in
         red)
-            message=${*:-$DEFAULT_MESSAGE}
-            test && revert || commit "$TEST_PREFIX $message"
+            set_test_commit_message $*
+            test && revert || commit "$message"
             ;;
         green)
-            set_message_when_not_provided $*
-            set_behaviour_or_structure_prefix
-            test && commit "$prefix $message" || revert
+            set_behaviour_or_structure_commit_message $*
+            test && commit "$message" || revert
             ;;
         *)
             usage
@@ -31,14 +30,6 @@ main() {
     esac
 }
 
-set_message_when_not_provided() {
-    message=${*:-}
-    if [ -z "$message" ];
-    then
-        any_prefix="\(${TEST_PREFIX}\|${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)"
-        message=`git show -s --format='format:%s' | sed -e "s/^$any_prefix //"`
-    fi
-}
 
 usage() {
     error "Usage: tcr {red,green} [msg]"
@@ -62,11 +53,28 @@ error() {
     exit 1
 }
 
-test() {
-    ${TCR_TEST_COMMAND:-make test}
+set_test_commit_message() {
+    set_test_commit_message_prefix
+    message=${*:-$DEFAULT_MESSAGE}
+    message="$prefix $message"
 }
 
-set_behaviour_or_structure_prefix() {
+set_test_commit_message_prefix() {
+    prefix=$TEST_PREFIX
+}
+
+set_behaviour_or_structure_commit_message() {
+    set_behaviour_or_structure_commit_message_prefix
+    message=${*:-}
+    if [ -z "$message" ];
+    then
+        any_prefix="\(${TEST_PREFIX}\|${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)"
+        message=`git show -s --format='format:%s' | sed -e "s/^$any_prefix //"`
+    fi
+    message="$prefix $message"
+}
+
+set_behaviour_or_structure_commit_message_prefix() {
     B_or_S_prefix="\(${BEHAVIOUR_PREFIX}\|${STRUCTURE_PREFIX}\)"
     last_prefix_is_B_or_S=`git show -s --format='format:%s' | grep -o "^${B_or_S_prefix}" || true`
     if [ -z $last_prefix_is_B_or_S ];
@@ -77,6 +85,9 @@ set_behaviour_or_structure_prefix() {
     fi
 }
 
+test() {
+    ${TCR_TEST_COMMAND:-make test}
+}
 
 commit() {
     message=${1:-}
