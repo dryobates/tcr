@@ -8,7 +8,7 @@ main() {
     case $expected in
         red)
             check_guards
-            $TCR_TEST_COMMAND && revert || exit 0
+            $TCR_TEST_COMMAND && revert || commit
             ;;
         green)
             check_guards
@@ -41,6 +41,10 @@ error() {
 revert() {
     git stash
     exit 1
+}
+
+commit() {
+    git commit -am "working"
 }
 
 main $*
