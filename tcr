@@ -7,21 +7,31 @@ BEHAVIOUR_PREFIX="B"
 STRUCTURE_PREFIX="S"
 
 main() {
+    if [ $# == "0" ];
+    then
+        usage
+    fi
     expected=${1:-}
+    shift
+    message=${*:-working}
     case $expected in
         red)
             check_guards
-            test && revert || commit $TEST_PREFIX
+            test && revert || commit "$TEST_PREFIX $message"
             ;;
         green)
             check_guards
             set_behaviour_or_structure_prefix
-            test && commit $prefix || revert
+            test && commit "$prefix working" || revert
             ;;
         *)
-            error "Usage: tcr {red,green} [msg]"
+            usage
             ;;
     esac
+}
+
+usage() {
+    error "Usage: tcr {red,green} [msg]"
 }
 
 check_guards() {
@@ -58,8 +68,8 @@ set_behaviour_or_structure_prefix() {
 
 
 commit() {
-    prefix=${1:-}
-    git commit -am "$prefix working"
+    message=${1:-}
+    git commit -am "$message"
 }
 
 revert() {
