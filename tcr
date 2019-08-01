@@ -12,7 +12,7 @@ main() {
             ;;
         green)
             check_guards
-            $TCR_TEST_COMMAND || revert
+            $TCR_TEST_COMMAND || revert && commit
             ;;
         *)
             error "Usage: tcr {red,green} [msg]"
