@@ -137,6 +137,15 @@ test_commits_changes_with_given_message_when_success_and_expected_green() {
     assertChangesCommitedWithMessage "B $message"
 }
 
+test_commits_changes_with_last_message_but_different_prefix_when_success_and_expected_green() {
+    givenLastCommitMessageHadMessage "T custom message"
+    givenPassingTest
+
+    result=`$TCR green`
+
+    assertChangesCommitedWithMessage "B custom message"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -153,6 +162,14 @@ givenLastCommitMessageHadPrefix() {
     echo "#" >> $TCR_TEST_COMMAND
     git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
     git -C $TEST_DIR commit -m "$prefix message" > /dev/null
+}
+
+givenLastCommitMessageHadMessage() {
+    givenRepositoryHasBeenInitialized
+    message=$1
+    echo "#" >> $TCR_TEST_COMMAND
+    git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
+    git -C $TEST_DIR commit -m "$message" > /dev/null
 }
 
 givenRepositoryHasBeenInitialized() {
@@ -186,7 +203,6 @@ assertChangesCommitedWithMessage() {
     assertEquals "$message" "$last_commit"
 }
 
-# commits changes with last message but different prefix when success and expected green
 # runs tests with make test when test command not provided
 
 setUp() {
