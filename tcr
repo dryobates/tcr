@@ -8,11 +8,11 @@ main() {
     case $expected in
         red)
             check_guards
-            $TCR_TEST_COMMAND && revert || commit
+            test && revert || commit
             ;;
         green)
             check_guards
-            $TCR_TEST_COMMAND || revert && commit
+            test && commit || revert
             ;;
         *)
             error "Usage: tcr {red,green} [msg]"
@@ -26,7 +26,7 @@ check_guards() {
 }
 
 error_when_not_git_repository() {
-    test -d .git || error "Run from git repository!"
+    [ -d .git ] || error "Run from git repository!"
 }
 
 error_when_no_initial_commit() {
@@ -38,13 +38,17 @@ error() {
     exit 1
 }
 
-revert() {
-    git stash
-    exit 1
+test() {
+    $TCR_TEST_COMMAND
 }
 
 commit() {
     git commit -am "working"
+}
+
+revert() {
+    git stash
+    exit 1
 }
 
 main $*
