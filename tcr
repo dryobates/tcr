@@ -8,7 +8,7 @@ main() {
     case $expected in
         red)
             check_guards
-            test && revert || commit
+            test && revert || commit "T"
             ;;
         green)
             check_guards
@@ -43,7 +43,8 @@ test() {
 }
 
 commit() {
-    git commit -am "working"
+    prefix=${1:-}
+    git commit -am "$prefix working"
 }
 
 revert() {
