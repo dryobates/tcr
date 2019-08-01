@@ -86,6 +86,14 @@ test_commits_changes_when_failure_and_expected_red() {
     assertChangesCommited
 }
 
+test_commits_changes_when_success_and_expected_green() {
+    givenPassingTest
+
+    result=`$TCR green`
+
+    assertChangesCommited
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -122,7 +130,6 @@ assertChangesCommited() {
 }
 
 
-# commits changes when success and expected green
 # runs tests with make test when test command not provided
 # commits changes with T prefix when failure and expected red
 # commits changes with B prefix when success and expected green
