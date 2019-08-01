@@ -21,7 +21,7 @@ main() {
             ;;
         green)
             set_behaviour_or_structure_prefix
-            test && commit "$prefix working" || revert
+            test && commit "$prefix $message" || revert
             ;;
         *)
             usage
