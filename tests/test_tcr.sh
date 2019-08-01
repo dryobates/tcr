@@ -110,6 +110,15 @@ test_commits_changes_with_B_prefix_when_success_and_expected_green() {
     assertChangesCommitedWithPrefix "B"
 }
 
+test_commits_changes_with_S_prefix_when_success_expected_green_and_last_commit_was_with_B_or_S_prefix() {
+    givenLastCommitMessageHadPrefix "B"
+    givenPassingTest
+
+    result=`$TCR green`
+
+    assertChangesCommitedWithPrefix "S"
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -118,6 +127,14 @@ givenFailingTest() {
 givenPassingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 0" > $TCR_TEST_COMMAND
+}
+
+givenLastCommitMessageHadPrefix() {
+    givenRepositoryHasBeenInitialized
+    prefix=$1
+    echo "#" >> $TCR_TEST_COMMAND
+    git -C $TEST_DIR add $TCR_TEST_COMMAND > /dev/null
+    git -C $TEST_DIR commit -m "$prefix message" > /dev/null
 }
 
 givenRepositoryHasBeenInitialized() {
@@ -151,7 +168,6 @@ assertChangesCommitedWithPrefix() {
     assertEquals "$prefix working" "$last_commit"
 }
 
-# commits changes with S prefix when success, expected green and last commit was with B or S prefix
 # commits changes with given message when failure and expected red
 # commits changes with given message when success and expected green
 # runs tests with make test when test command not provided
