@@ -165,6 +165,7 @@ test_runs_tests_with_make_test_when_test_command_not_provided() {
 }
 
 test_finds_repo_in_current_directory() {
+    git init  -q $TEST_DIR > /dev/null
     result=`find_repo $PWD`
     assertTrue $?
 }
