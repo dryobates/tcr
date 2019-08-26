@@ -50,9 +50,13 @@ find_repo() {
     then
         true
     else
-        path="$path/.."
-        path=`realpath $path`
-        [ -d $path/.git ]
+        if [ "$path" != "/" ];
+        then
+            path="$path/.."
+            find_repo $path
+        else
+            false
+        fi
     fi
 }
 
