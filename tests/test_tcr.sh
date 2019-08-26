@@ -170,6 +170,13 @@ test_finds_repo_in_current_directory() {
     assertTrue $?
 }
 
+test_finds_repo_in_parent_directory() {
+    git init  -q $TEST_DIR > /dev/null
+    mkdir subdir && cd subdir
+    result=`find_repo $PWD`
+    assertTrue $?
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
