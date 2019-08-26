@@ -46,7 +46,14 @@ error_when_not_git_repository() {
 
 find_repo() {
     path=`realpath $1`
-    [ -d $path/.git ]
+    if [ -d $path/.git ];
+    then
+        true
+    else
+        path="$path/.."
+        path=`realpath $path`
+        [ -d $path/.git ]
+    fi
 }
 
 error_when_no_initial_commit() {
