@@ -41,7 +41,7 @@ check_guards() {
 }
 
 error_when_not_git_repository() {
-    [ -d .git ] || error "Run from git repository!"
+    find_repo $PWD || error "Run from git repository!"
 }
 
 find_repo() {
