@@ -44,6 +44,11 @@ error_when_not_git_repository() {
     [ -d .git ] || error "Run from git repository!"
 }
 
+find_repo() {
+    path=`realpath $1`
+    [ -d $path/.git ]
+}
+
 error_when_no_initial_commit() {
     git show > /dev/null 2>&1 || error "At least initial commit is needed"
 }
