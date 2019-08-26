@@ -177,6 +177,13 @@ test_finds_repo_in_parent_directory() {
     assertTrue $?
 }
 
+test_finds_repo_in_ancestors_directory() {
+    git init  -q $TEST_DIR > /dev/null
+    mkdir -p subdir/subsubdir && cd subdir/subsubdir
+    result=`find_repo $PWD`
+    assertTrue $?
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
