@@ -46,10 +46,8 @@ error_when_not_git_repository() {
 
 find_repo() {
     path=`realpath $1`
-    if [ -d $path/.git ];
+    if [ ! -d $path/.git ];
     then
-        true
-    else
         if [ "$path" != "/" ];
         then
             path="$path/.."
