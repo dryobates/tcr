@@ -50,8 +50,7 @@ find_repo() {
     then
         if [ "$path" != "/" ];
         then
-            path="$path/.."
-            find_repo $path
+            find_repo $path/..
         else
             false
         fi
