@@ -184,6 +184,10 @@ test_finds_repo_in_ancestors_directory() {
     assertTrue $?
 }
 
+test_returns_false_when_no_repo_up_to_root() {
+    result=`find_repo $PWD`
+    assertFalse $?
+}
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
