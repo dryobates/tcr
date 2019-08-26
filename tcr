@@ -99,4 +99,4 @@ revert() {
     exit 1
 }
 
-main $*
+[[ "run" == "${TCR_TESTING:-run}" ]] && main $* || true

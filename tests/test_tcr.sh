@@ -164,6 +164,11 @@ test_runs_tests_with_make_test_when_test_command_not_provided() {
     assertChangesCommitedWithMessage "T working"
 }
 
+test_finds_repo_in_current_directory() {
+    result=`find_repo $PWD`
+    assertTrue $?
+}
+
 givenFailingTest() {
     givenRepositoryHasBeenInitialized
     echo "exit 1" > $TCR_TEST_COMMAND
@@ -220,9 +225,16 @@ assertChangesCommitedWithMessage() {
     assertEquals "$message" "$last_commit"
 }
 
-setUp() {
+oneTimeSetUp() {
     TCR=$(dirname $(dirname $0))/tcr
     TCR=`realpath $TCR`
+    TCR_TESTING="unit"
+    source "$TCR"
+    set +e
+    unset TCR_TESTING
+}
+
+setUp() {
     TEST_DIR=`mktemp -d`
     TCR_TEST_COMMAND=$TEST_DIR/test.sh
     export TCR_TEST_COMMAND
@@ -231,6 +243,7 @@ setUp() {
     OLD_DIR=$PWD
     cd $TEST_DIR
 }
+
 tearDown() {
     cd $OLD_DIR
     rm -rf $TEST_DIR
