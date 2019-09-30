@@ -1,0 +1,5 @@
+language: shell
+
+install: make develop
+
+script: make test
