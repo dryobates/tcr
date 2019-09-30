@@ -7,6 +7,4 @@ develop:  ## prepare development environment
 	curl https://raw.githubusercontent.com/kward/shunit2/master/shunit2 > tests/shunit2
 
 test:  ## run tests
-	ls
-	ls tests
 	sh ./tests/test_tcr.sh
