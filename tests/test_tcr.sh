@@ -159,7 +159,7 @@ test_runs_tests_with_make_test_when_test_command_not_provided() {
     givenFailingTest
     givenTestCommandIsMakeTest
 
-    $TCR red &> /dev/null
+    $TCR red >/dev/null 2>&1
 
     assertChangesCommitedWithMessage "T working"
 }
@@ -248,7 +248,7 @@ oneTimeSetUp() {
     TCR=$(dirname $(dirname $0))/tcr
     TCR=`realpath $TCR`
     TCR_TESTING="unit"
-    source "$TCR"
+    . "$TCR"
     set +e
     unset TCR_TESTING
 }
@@ -270,4 +270,4 @@ tearDown() {
 }
 
 # Load shUnit2
-source "$(dirname $(realpath $0))/shunit2"
+. "$(dirname $(realpath $0))/shunit2"

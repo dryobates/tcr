@@ -1,7 +1,6 @@
 #! /bin/sh
 # https://github.com/dryobates/tcr
 
-# set -o pipefail  # bash
 set -eu
 TEST_PREFIX="T"
 BEHAVIOUR_PREFIX="B"
