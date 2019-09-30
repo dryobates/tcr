@@ -248,8 +248,7 @@ oneTimeSetUp() {
     TCR=$(dirname $(dirname $0))/tcr
     TCR=`realpath $TCR`
     TCR_TESTING="unit"
-    echo "test $TCR"
-    source "$TCR"
+    . "$TCR"
     set +e
     unset TCR_TESTING
 }
@@ -271,5 +270,4 @@ tearDown() {
 }
 
 # Load shUnit2
-echo "source $(dirname $(realpath $0))/shunit2"
-source "$(dirname $(realpath $0))/shunit2"
+. "$(dirname $(realpath $0))/shunit2"
