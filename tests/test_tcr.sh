@@ -270,4 +270,4 @@ tearDown() {
 }
 
 # Load shUnit2
-source `dirname $0`/shunit2
+source $(dirname $(realpath $0))/shunit2
