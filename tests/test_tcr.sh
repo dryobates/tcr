@@ -248,7 +248,7 @@ oneTimeSetUp() {
     TCR=$(dirname $(dirname $0))/tcr
     TCR=`realpath $TCR`
     TCR_TESTING="unit"
-    . "$TCR"
+    source "$TCR"
     set +e
     unset TCR_TESTING
 }
@@ -270,4 +270,4 @@ tearDown() {
 }
 
 # Load shUnit2
-. "$(dirname $(realpath $0))/shunit2"
+source "$(dirname $(realpath $0))/shunit2"
