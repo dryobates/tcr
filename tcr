@@ -1,14 +1,15 @@
 #! /bin/sh
 # https://github.com/dryobates/tcr
 
-set -euo pipefail
+# set -o pipefail  # bash
+set -eu
 TEST_PREFIX="T"
 BEHAVIOUR_PREFIX="B"
 STRUCTURE_PREFIX="S"
 DEFAULT_MESSAGE="working"
 
 main() {
-    if [ $# == "0" ];
+    if [ $# = "0" ];
     then
         usage
     fi
@@ -112,4 +113,4 @@ revert() {
     exit 1
 }
 
-[[ "run" == "${TCR_TESTING:-run}" ]] && main $* || true
+[ "run" = "${TCR_TESTING:-run}" ] && main $* || true
